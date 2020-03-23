@@ -1,19 +1,26 @@
 package com.example.whatfood
 
 import android.Manifest
-import android.app.ActionBar
 import android.app.Activity
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
-import android.widget.*
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import java.io.ByteArrayOutputStream
+
 
 class MainAct : AppCompatActivity() {
     var mCapture: Button? = null
@@ -35,6 +42,10 @@ class MainAct : AppCompatActivity() {
             action.setDisplayShowCustomEnabled(true)
         }
         action!!.setCustomView(actionbarlayout)
+
+        //val bundle = intent.extras
+        //val message = bundle.getArrayList("setting")
+
 
 
         //button click action
@@ -103,12 +114,29 @@ class MainAct : AppCompatActivity() {
         val result = classifier.recognizeImage(bitmap)
         //runOnUiThread { Toast.makeText(this, result.get(0).title, Toast.LENGTH_SHORT).show() }
         var size = result.size
+
+        val filename = "bitmap.png"
+        val bytes = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+        var stream = this.openFileOutput(filename, Context.MODE_PRIVATE)
+        stream.write(bytes.toByteArray())
+        stream.close()
+
+        //bitmap.recycle()
+
+
         //runOnUiThread { Toast.makeText(this, size.toString(), Toast.LENGTH_SHORT).show() }
         if (size==0){
             runOnUiThread { Toast.makeText(this, "No item found", Toast.LENGTH_SHORT).show() }
+            //val intent = Intent(this, results::class.java).putExtra("result", "chicken curry")
+            //intent.putExtra("image", filename)
+            //startActivity(intent)
         }
         else{
-            runOnUiThread { Toast.makeText(this, result.get(0).title, Toast.LENGTH_SHORT).show() }
+            //runOnUiThread { Toast.makeText(this, result.get(0).title, Toast.LENGTH_SHORT).show() }
+            val intent = Intent(this, results::class.java).putExtra("result", result.get(0).title)
+            intent.putExtra("image", filename)
+            startActivity(intent)
         }
 
     }
@@ -117,4 +145,24 @@ class MainAct : AppCompatActivity() {
         private const val IMAGE_CAPTURE_CODE = 1001
     }
 
-}
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return when (item?.itemId) {
+            R.id.action_settings -> {
+                //Toast.makeText(applicationContext, "click on setting", Toast.LENGTH_LONG).show()
+                intent = Intent(this, setting::class.java)
+                startActivity(intent)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+    }
+
+
+
