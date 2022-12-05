@@ -1,5 +1,5 @@
 # WhatFood-Android-App
-Android application to identify food item from captured image and predict food allergy attacks based on user settings. Concept has been patented Application Number-202011016209, Application Ref Number-202011016209, Filing Date-15/04/2020.
+Android application to identify food item from captured image and predict food allergy attacks based on user settings. Concept has been patented Application Number-202011016209, Patent title: “AN AUTOMATIC FOOD ALLERGY DETECTING SYSTEM AND A PROCESS FOR THE DETECTION THEREOF”, Filing Date-15/04/2020.
 
 <img src="https://github.com/paarthbir77/WhatFood-Android-App/blob/master/homescreen.png" width="400" height="600">
 <img src="https://github.com/paarthbir77/WhatFood-Android-App/blob/master/settings.png" width="400" height="600">
